@@ -4,6 +4,20 @@ using System;
 using UnityEngine.Rendering;
 using UnityEngine;
 
+
+
+public class Script2 : MonoBehaviour
+{
+    public MyOSC MyOSC;
+
+    void Update()
+    {
+        // Accéder à la valeur dans Script1
+        float valueRecuperee = MyOSC.value;
+        Debug.Log("Valeur récupérée de Script1 : " + valueRecuperee);
+    }
+}
+
 namespace Treegen
 {
   [ExecuteInEditMode]
@@ -62,7 +76,7 @@ namespace Treegen
     public int Parts = 6;
     [Tooltip("The number of stages of the trunc")]
     [Range(1, 25)]
-    public int Segments = 15;
+    public int Segments = valueRecuperee;
     [Tooltip("Period of stages which will grow the branches")]
     public int SkipBranch = 1;
 
