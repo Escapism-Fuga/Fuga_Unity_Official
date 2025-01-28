@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using extOSC;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 
 public class MyOSC : MonoBehaviour
@@ -27,10 +28,12 @@ public class MyOSC : MonoBehaviour
         if (oscMessage.Values[0].Type == OSCValueType.Int)
         {
             value = oscMessage.Values[0].IntValue;
+            Debug.Log(value);
         }
         else if (oscMessage.Values[0].Type == OSCValueType.Float)
         {
             value = oscMessage.Values[0].FloatValue;
+            Debug.Log(value);
         }
         else
         {
@@ -49,33 +52,8 @@ public class MyOSC : MonoBehaviour
     void Start()
     {
         // Mettre cette ligne dans la méthode start()
-        oscReceiver.Bind("/adresse", TraiterMessageOSC);
-    }
-
-    // LateUpdate is called once per frame after Update
-    void LateUpdate()
-    {
-        // Si 50 millisecondes se sont écoulées depuis le dernier envoi :
-        if (Time.realtimeSinceStartup - myChronoStart >= 0.05f ) 
-        {
-            myChronoStart = Time.realtimeSinceStartup;
-
-            // Créer le message
-            var myOscMessage = new OSCMessage("/adresse");
-
-        
-            // Aller chercher une valeur:
-            float myPositionX = myTarget.transform.position.x;
-            // Changer l'échelle de la valeur:
-            float myScaledPositionX = ScaleValue(myPositionX, -7, 7, 0, 255);
-
-            // Ajouter la valeur au message
-            myOscMessage.AddValue(OSCValue.Int( (int) myScaledPositionX) ); // Le (int) entre parenthèses convertit le type.
-
-            // Envoyer le message
-            oscTransmitter.Send(myOscMessage);
-        }
-  
+        oscReceiver.Bind("/data", TraiterMessageOSC);
+        Debug.Log("Connexion établie !");
     }
 
 
