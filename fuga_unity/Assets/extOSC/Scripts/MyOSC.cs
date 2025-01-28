@@ -2,64 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using extOSC;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
-
 
 public class MyOSC : MonoBehaviour
 {
     public extOSC.OSCReceiver oscReceiver;
-    public extOSC.OSCTransmitter oscTransmitter;
     public GameObject myTarget;
-    // Variable utilisée pour contrôler la vitesse d'envoi des messages :
-    float myChronoStart;
 
-
+    // Variables pour stocker les valeurs reçues (visibles dans l'inspecteur)
+    public float first { get; private set; }
+    public float second { get; private set; }
+    public float third { get; private set; }
 
     public static float ScaleValue(float value, float inputMin, float inputMax, float outputMin, float outputMax)
     {
         return Mathf.Clamp(((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin), outputMin, outputMax);
     }
 
-    void TraiterMessageOSC(OSCMessage oscMessage)
+    void Start()
     {
-        // Récupérer une valeur numérique en tant que float
-        // même si elle est de type float ou int :
-        float value;
+        // Lier les adresses OSC aux méthodes correspondantes
+        oscReceiver.Bind("/first", message => TraiterMessageOSC(message, "first"));
+        oscReceiver.Bind("/second", message => TraiterMessageOSC(message, "second"));
+        oscReceiver.Bind("/third", message => TraiterMessageOSC(message, "third"));
+    }
+
+    void TraiterMessageOSC(OSCMessage oscMessage, string messageType)
+    {
+        float value = 0;
+
         if (oscMessage.Values[0].Type == OSCValueType.Int)
         {
             value = oscMessage.Values[0].IntValue;
-            Debug.Log(value);
         }
         else if (oscMessage.Values[0].Type == OSCValueType.Float)
         {
             value = oscMessage.Values[0].FloatValue;
-            Debug.Log(value);
         }
         else
         {
-            // Si la valeur n'est ni un foat ou int, on quitte la méthode :
-            return;
+            return; // Quitter si la valeur n'est pas valide
         }
 
-        // Changer l'échelle de la valeur pour l'appliquer à la rotation :
+        Debug.Log($"[{messageType}] Valeur reçue : {value}");
+
+        // Stocker la valeur dans la bonne variable
+        switch (messageType)
+        {
+            case "first":
+                first = value;
+                break;
+            case "second":
+                second = value;
+                break;
+            case "third":
+                third = value;
+                break;
+        }
+
+        // Appliquer la rotation au GameObject
         float rotation = ScaleValue(value, 0, 4095, 45, 315);
-        // Appliquer la rotation au GameObject ciblé :
         myTarget.transform.eulerAngles = new Vector3(0, 0, rotation);
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Mettre cette ligne dans la méthode start()
-        oscReceiver.Bind("/data", TraiterMessageOSC);
-        Debug.Log("Connexion établie !");
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
