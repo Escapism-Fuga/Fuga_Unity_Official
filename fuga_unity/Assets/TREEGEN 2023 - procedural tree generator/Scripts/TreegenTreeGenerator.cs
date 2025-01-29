@@ -26,6 +26,7 @@ namespace Treegen
   [ExecuteInEditMode]
   [AddComponentMenu("TREEGEN/TreeGenerator")]
   public class TreegenTreeGenerator : MonoBehaviour
+
   {
 
     public enum LeafType
