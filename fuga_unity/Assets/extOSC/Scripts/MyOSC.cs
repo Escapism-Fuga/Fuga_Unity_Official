@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using extOSC;
-using Treegen; // Ajout du namespace pour accéder aux classes de l'asset
+
 
 public class MyOSC : MonoBehaviour
 {
     public extOSC.OSCReceiver oscReceiver;
-    public TreegenTreeGenerator treeGenerator; // Référence au générateur d'arbre
 
     // Tableau pour stocker les valeurs reçues (une valeur par index)
     public float[] values = new float[3]; // Ajuste la taille du tableau selon tes besoins
@@ -19,13 +20,6 @@ public class MyOSC : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Recherche de TreegenTreeGenerator...");
-        var test = FindObjectOfType<TreegenTreeGenerator>();
-
-        if (test != null)
-            Debug.Log("TreegenTreeGenerator trouvé !");
-        else
-            Debug.LogError("TreegenTreeGenerator introuvable !");
         // Lier les adresses OSC aux méthodes correspondantes
         oscReceiver.Bind("/first", message => TraiterMessageOSC(message, 0)); // Index 0 pour la première valeur
         oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1)); // Index 1 pour la deuxième valeur
@@ -59,24 +53,5 @@ public class MyOSC : MonoBehaviour
         Debug.Log($"Valeur reçue à l'index {index}: {value}");
     }
 
-    void Update()
-    {
-        if (treeGenerator == null)
-        {
-            Debug.LogError("treeGenerator n'est pas assigné !");
-            return;
-        }
-
-        // Modifier la courbure du tronc
-        treeGenerator.TreeNoiseForce = values[0];
-
-        // Modifier l'épaisseur du tronc
-        treeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(values[1], 0.1f, 2.0f);
-
-        // Régler la taille des feuilles
-        treeGenerator.LeavesScale = new Vector3(values[2], values[2], values[2]);
-
-        // Rafraîchir la génération de l'arbre
-        treeGenerator.NewGen();
-    }
+    
 }
