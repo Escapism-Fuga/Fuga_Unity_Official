@@ -122,7 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!43 &266260639
+--- !u!43 &411553408
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -500,7 +500,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840918123}
-  m_Mesh: {fileID: 266260639}
+  m_Mesh: {fileID: 411553408}
 --- !u!23 &1840918125
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1130,7 +1130,7 @@ MonoBehaviour:
   _autoConnect: 1
   _closeOnPause: 0
   _mapBundle: {fileID: 0}
-  _workInEditor: 0
+  _workInEditor: 1
   _localHostMode: 0
   _localHost: 192.168.1.192
   _localPort: 7001
@@ -1162,8 +1162,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oscReceiver: {fileID: 1993533827}
-  oscTransmitter: {fileID: 1993533826}
   myTarget: {fileID: 1840918123}
+  values:
+  - 0
+  - 0
+  - 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

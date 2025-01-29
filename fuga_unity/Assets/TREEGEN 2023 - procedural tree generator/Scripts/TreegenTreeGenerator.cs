@@ -12,11 +12,14 @@ public class Script2 : MonoBehaviour
 
     void Update()
     {
-        // Accéder à la valeur dans Script1
-        float valueRecuperee = MyOSC.value;
+        // Exemple d'accès à une valeur du tableau `values`
+        // Accéder à la valeur à l'index 0, par exemple
+        float valueRecuperee = MyOSC.values[0];
         Debug.Log("Valeur récupérée de Script1 : " + valueRecuperee);
+
     }
 }
+
 
 namespace Treegen
 {
@@ -24,6 +27,7 @@ namespace Treegen
   [AddComponentMenu("TREEGEN/TreeGenerator")]
   public class TreegenTreeGenerator : MonoBehaviour
   {
+
     public enum LeafType
     {
       Normal,
@@ -76,7 +80,7 @@ namespace Treegen
     public int Parts = 6;
     [Tooltip("The number of stages of the trunc")]
     [Range(1, 25)]
-    public int Segments = valueRecuperee;
+    public int Segments = 15;
     [Tooltip("Period of stages which will grow the branches")]
     public int SkipBranch = 1;
 
