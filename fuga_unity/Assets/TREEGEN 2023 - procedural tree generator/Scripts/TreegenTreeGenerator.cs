@@ -6,19 +6,7 @@ using UnityEngine;
 
 
 
-public class Script2 : MonoBehaviour
-{
-    public MyOSC MyOSC;
 
-    void Update()
-    {
-        // Exemple d'accès à une valeur du tableau `values`
-        // Accéder à la valeur à l'index 0, par exemple
-        float valueRecuperee = MyOSC.values[0];
-        Debug.Log("Valeur récupérée de Script1 : " + valueRecuperee);
-
-    }
-}
 
 
 namespace Treegen

@@ -1,16 +1,21 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using extOSC;
+using UnityEditor;
+using Treegen;
+
 
 public class MyOSC : MonoBehaviour
 {
+    // public TreegenTreeGenerator treegenTreeGenerator;
     public extOSC.OSCReceiver oscReceiver;
 
-    // Tableau pour stocker les valeurs reçues (une valeur par index)
-    public float[] values = new float[3]; // Ajuste la taille du tableau selon tes besoins
+    public Treegen.TreegenTreeGenerator treegenTreeGenerator;
+    public float[] values = new float[3];
 
     public static float ScaleValue(float value, float inputMin, float inputMax, float outputMin, float outputMax)
     {
@@ -19,17 +24,15 @@ public class MyOSC : MonoBehaviour
 
     void Start()
     {
-        // Lier les adresses OSC aux méthodes correspondantes
-        oscReceiver.Bind("/first", message => TraiterMessageOSC(message, 0)); // Index 0 pour la première valeur
-        oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1)); // Index 1 pour la deuxième valeur
-        oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2)); // Index 2 pour la troisième valeur
+        oscReceiver.Bind("/first", message => TraiterMessageOSC(message, 0));
+        oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
+        oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
     }
 
     void TraiterMessageOSC(OSCMessage oscMessage, int index)
     {
         float value = 0;
 
-        // Vérifie le type de valeur dans le message OSC
         if (oscMessage.Values[0].Type == OSCValueType.Int)
         {
             value = oscMessage.Values[0].IntValue;
@@ -40,10 +43,10 @@ public class MyOSC : MonoBehaviour
         }
         else
         {
-            return; // Quitte si la valeur n'est pas valide
+            return;
         }
 
-        // Stocker la valeur dans le tableau à l'index correspondant
+
         if (index >= 0 && index < values.Length)
         {
             values[index] = value;
@@ -51,5 +54,12 @@ public class MyOSC : MonoBehaviour
 
         Debug.Log($"Valeur reçue à l'index {index}: {value}");
     }
+    void Update()
+    {
+        treegenTreeGenerator.TreeNoiseForce = values[0];
+        treegenTreeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(values[1], 0.1f, 2.0f);
+        treegenTreeGenerator.LeavesScale = new Vector3(values[2], values[2], values[2]);
+        treegenTreeGenerator.NewGen();
 
+    }
 }
