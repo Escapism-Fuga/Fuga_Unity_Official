@@ -24,12 +24,12 @@ public class MyOSC : MonoBehaviour
 
     void Start()
     {
-        oscReceiver.Bind("/first", message => TraiterMessageOSC(message, 0));
-        oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
-        oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
+        oscReceiver.Bind("/first", message => MessageVolume(message));
+        //oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
+        //oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
     }
 
-    void TraiterMessageOSC(OSCMessage oscMessage, int index)
+    void MessageVolume(OSCMessage oscMessage)
     {
         float value = 0;
 
@@ -46,20 +46,18 @@ public class MyOSC : MonoBehaviour
             return;
         }
 
+        Debug.Log("Volume: " + value);
 
-        if (index >= 0 && index < values.Length)
-        {
-            values[index] = value;
-        }
+        treegenTreeGenerator.TreeNoiseForce = value;
+        treegenTreeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(value, 0.1f, 2.0f);
+        treegenTreeGenerator.LeavesScale = new Vector3(value, 50, 10);
 
-        Debug.Log($"Valeur reçue à l'index {index}: {value}");
+        // treegenTreeGenerator.NewGen();  COmprendre ce quil fait
+
     }
     void Update()
     {
-        treegenTreeGenerator.TreeNoiseForce = values[0];
-        treegenTreeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(values[1], 0.1f, 2.0f);
-        treegenTreeGenerator.LeavesScale = new Vector3(values[2], values[2], values[2]);
-        treegenTreeGenerator.NewGen();
+        
 
     }
 }
