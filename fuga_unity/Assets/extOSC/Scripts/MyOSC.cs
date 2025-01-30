@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using extOSC;
 
 public class MyOSC : MonoBehaviour
@@ -17,9 +19,6 @@ public class MyOSC : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Recherche de TreegenTreeGenerator...");
-
-        
         // Lier les adresses OSC aux méthodes correspondantes
         oscReceiver.Bind("/first", message => TraiterMessageOSC(message, 0)); // Index 0 pour la première valeur
         oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1)); // Index 1 pour la deuxième valeur
@@ -53,5 +52,4 @@ public class MyOSC : MonoBehaviour
         Debug.Log($"Valeur reçue à l'index {index}: {value}");
     }
 
-   
 }
