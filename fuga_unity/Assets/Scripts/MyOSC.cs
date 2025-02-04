@@ -24,6 +24,7 @@ public class MyOSC : MonoBehaviour
     void Start()
     {
         oscReceiver.Bind("/vkb_midi/9/note/36", message => MessageVolume(message));
+// oscReceiver.Bind("/vkb_midi/9/note/37", message => MessageFrequance(message));
         //oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
         //oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
     }
@@ -50,12 +51,34 @@ public class MyOSC : MonoBehaviour
 
         treegenTreeGenerator.TreeNoiseForce = lightMath;
 
-        treegenTreeGenerator.NewGen();
+    }
+
+    void MessageFrequance(OSCMessage oscMessage)
+    {
+        float value = 0;
+
+        if (oscMessage.Values[0].Type == OSCValueType.Int)
+        {
+            value = oscMessage.Values[0].IntValue;
+        }
+        else if (oscMessage.Values[0].Type == OSCValueType.Float)
+        {
+            value = oscMessage.Values[0].FloatValue;
+        }
+        else
+        {
+            return;
+        }
+
+        Debug.Log("Frequence: " + value);
+        float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
+
+        treegenTreeGenerator.LeavesNoiseForce = lightMath;
 
     }
     void Update()
     {
 
-
+        treegenTreeGenerator.NewGen();
     }
 }
