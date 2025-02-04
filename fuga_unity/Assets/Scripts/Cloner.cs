@@ -4,7 +4,7 @@ using UnityEngine;
 public class CloneOnPress : MonoBehaviour
 {
     public GameObject arbreOriginel;
-    public float distance = 22500f;
+    public float distance;
 
     public TreegenTreeGenerator treegenTreeGenerator;
 
@@ -72,7 +72,7 @@ public class CloneOnPress : MonoBehaviour
         GameObject clone = Instantiate(arbreOriginel);
 
         // Déplacer le clone de 500 mètres (500 unités) sur l'axe Z
-        clone.transform.position = arbreOriginel.transform.position + new Vector3(0, 0, distance);
+        clone.transform.position = arbreOriginel.transform.position + new Vector3(distance, 0, distance);
     }
 
     void ResetArbreOriginel()
