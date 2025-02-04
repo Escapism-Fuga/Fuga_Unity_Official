@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -24,8 +23,8 @@ public class MyOSC : MonoBehaviour
 
     void Start()
     {
-        //oscReceiver.Bind("/first", message => MessageVolume(message));
-        //oscReceiver.Bind("/second", message => MessagePremValeur(message));
+        oscReceiver.Bind("/vkb_midi/9/note/36", message => MessageVolume(message));
+        //oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
         //oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
     }
 
@@ -47,42 +46,16 @@ public class MyOSC : MonoBehaviour
         }
 
         Debug.Log("Volume: " + value);
+        float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
 
-        treegenTreeGenerator.TreeNoiseForce = value;
-        //treegenTreeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(value, 0.1f, 2.0f);
-        //treegenTreeGenerator.LeavesScale = new Vector3(value, 50, 10);
+        treegenTreeGenerator.TreeNoiseForce = lightMath;
 
-         treegenTreeGenerator.NewGen();  
-
-    }
-    void MessagePremValeur(OSCMessage oscMessage)
-    {
-        float value = 0;
-
-        if (oscMessage.Values[0].Type == OSCValueType.Int)
-        {
-            value = oscMessage.Values[0].IntValue;
-        }
-        else if (oscMessage.Values[0].Type == OSCValueType.Float)
-        {
-            value = oscMessage.Values[0].FloatValue;
-        }
-        else
-        {
-            return;
-        }
-
-        Debug.Log("Autre Valeur: " + value);
-
-        //treegenTreeGenerator.TreeNoiseForce = value;
-        treegenTreeGenerator.TrunkThickness.keys[1].value = Mathf.Clamp(value, 0.1f, 2.0f);
-        //treegenTreeGenerator.LeavesScale = new Vector3(value, 50, 10);
-
+        treegenTreeGenerator.NewGen();
 
     }
     void Update()
     {
-        
+
 
     }
 }
