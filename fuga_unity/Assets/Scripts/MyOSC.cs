@@ -24,9 +24,10 @@ public class MyOSC : MonoBehaviour
     void Start()
     {
         oscReceiver.Bind("/vkb_midi/9/note/36", message => MessageVolume(message));
-// oscReceiver.Bind("/vkb_midi/9/note/37", message => MessageFrequance(message));
-        //oscReceiver.Bind("/second", message => TraiterMessageOSC(message, 1));
-        //oscReceiver.Bind("/third", message => TraiterMessageOSC(message, 2));
+        oscReceiver.Bind("/vkb_midi/9/note/37", message => MessageFrequance(message));
+        oscReceiver.Bind("/btn1", message => MessageBtn1(message));
+        oscReceiver.Bind("/btn2", message => MessageBtn2(message));
+        oscReceiver.Bind("/btn3", message => MessageBtn3(message));
     }
 
     void MessageVolume(OSCMessage oscMessage)
@@ -74,6 +75,71 @@ public class MyOSC : MonoBehaviour
         float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
 
         treegenTreeGenerator.LeavesNoiseForce = lightMath;
+
+    }
+
+    void MessageBtn1(OSCMessage oscMessage)
+    {
+        float value = 0;
+
+        if (oscMessage.Values[0].Type == OSCValueType.Int)
+        {
+            value = oscMessage.Values[0].IntValue;
+        }
+        else if (oscMessage.Values[0].Type == OSCValueType.Float)
+        {
+            value = oscMessage.Values[0].FloatValue;
+        }
+        else
+        {
+            return;
+        }
+
+        Debug.Log("btn1: " + value);
+        float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
+
+    }
+
+    void MessageBtn2(OSCMessage oscMessage)
+    {
+        float value = 0;
+
+        if (oscMessage.Values[0].Type == OSCValueType.Int)
+        {
+            value = oscMessage.Values[0].IntValue;
+        }
+        else if (oscMessage.Values[0].Type == OSCValueType.Float)
+        {
+            value = oscMessage.Values[0].FloatValue;
+        }
+        else
+        {
+            return;
+        }
+
+        Debug.Log("btn2: " + value);
+        float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
+    }
+
+    void MessageBtn3(OSCMessage oscMessage)
+    {
+        float value = 0;
+
+        if (oscMessage.Values[0].Type == OSCValueType.Int)
+        {
+            value = oscMessage.Values[0].IntValue;
+        }
+        else if (oscMessage.Values[0].Type == OSCValueType.Float)
+        {
+            value = oscMessage.Values[0].FloatValue;
+        }
+        else
+        {
+            return;
+        }
+
+        Debug.Log("btn3: " + value);
+        float lightMath = Mathf.Lerp(0f, 5f, value / 1000f);
 
     }
     void Update()
